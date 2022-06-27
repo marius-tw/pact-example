@@ -1,8 +1,5 @@
 package com.example.demo.entity;
 
-import org.springframework.context.annotation.EnableMBeanExport;
-
-
 public class Item {
 
   public Item(String name) {
