@@ -7,6 +7,6 @@ Triggering consumer-endpoint to fetch from provider:
 
 - `curl http://localhost:8081/items-available`
 
-# PACT setup
+# PACT-broker setup
 
 - using `https://github.com/pact-foundation/pact-broker-docker#running-with-docker-compose`
