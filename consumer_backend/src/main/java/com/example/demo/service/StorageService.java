@@ -1,10 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Item;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -13,43 +14,44 @@ public class StorageService {
 
   private final WebClient webClient;
 
-  public StorageService() {
-    this.webClient = WebClient.builder()
-        .baseUrl("http://localhost:8080")
-        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        .build();
+  @Autowired
+  public StorageService(WebClient webClient) {
+    this.webClient = webClient;
   }
 
-  public List<String> getItemsAvailable() {
+  public List<Item> getItemsAvailable() {
 
-    List<String> storage = getItemsStored();
+    List<Item> storage = getItemsStored();
 
-    List<String> itemsInCart = fetchCartItems();
+    List<Item> itemsInCart = fetchCartItems();
 
-    List<String> availableItems = filterCartItemsFromStoredItems(storage, itemsInCart);
+    List<Item> availableItems = filterCartItemsFromStoredItems(storage, itemsInCart);
 
     return availableItems;
   }
 
-  public List<String> getItemsStored() {
-    return List.of("A","B","C","D");
+  public List<Item> getItemsStored() {
+    return Arrays.asList(
+        new Item("A"),
+        new Item("B"),
+        new Item("C"),
+        new Item("D")
+    );
   }
 
-  private List<String> fetchCartItems() {
+  private List<Item> fetchCartItems() {
     return webClient.get()
         .uri("/items")
         .retrieve().
-        bodyToMono(new ParameterizedTypeReference<List<String>>() {
+        bodyToMono(new ParameterizedTypeReference<List<Item>>() {
         }).block();
   }
 
-  private List<String> filterCartItemsFromStoredItems(List<String> storage, List<String> itemsInCart) {
+  private List<Item> filterCartItemsFromStoredItems(List<Item> storage,
+      List<Item> itemsInCart) {
     return storage
         .stream()
-        .filter(storageItem -> {
-          assert itemsInCart != null;
-          return !itemsInCart.contains(storageItem);
-        }).collect(
-            Collectors.toList());
+        .filter(storageItem -> !itemsInCart.contains(storageItem))
+        .collect(Collectors.toList());
   }
 }

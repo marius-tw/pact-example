@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Item;
 import com.example.demo.service.StorageService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,12 @@ public class StorageController {
   private StorageService storageService;
 
   @GetMapping("/items-available")
-  List<String> getItemsAvailable(){
+  List<Item> getItemsAvailable() {
     return storageService.getItemsAvailable();
   }
 
   @GetMapping("/items-stored")
-  List<String> getItemsStored(){
+  List<Item> getItemsStored() {
     return storageService.getItemsStored();
   }
 }
