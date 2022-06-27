@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.PactSpecVersion;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import com.example.demo.entity.Item;
@@ -14,13 +15,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@PactTestFor(providerName = "CartApplication", hostInterface="localhost")
+@PactTestFor(providerName = "CartApplication", hostInterface="localhost", port = "8080", pactVersion = PactSpecVersion.V3)
+@Tag("contractTest")
 public class StorageConsumerPactTest {
 
   @Pact(consumer = "StorageApplication")
@@ -56,9 +58,9 @@ public class StorageConsumerPactTest {
         .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
         .build();
 
-//    List<Item> items = new StorageService(webClient);
+    List<Item> items = new StorageService(webClient).getItemsAvailable();
 
-//    assertEquals(expected, items);
+    assertEquals(expected, items);
   }
 
   private Map<String, String> headers() {
