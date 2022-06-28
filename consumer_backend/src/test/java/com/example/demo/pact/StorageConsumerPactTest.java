@@ -1,28 +1,28 @@
 package com.example.demo.pact;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
-import au.com.dius.pact.core.model.PactSpecVersion;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
-import com.example.demo.entity.Item;
-import com.example.demo.service.StorageService;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@PactTestFor(providerName = "CartApplication", hostInterface="localhost", port = "8080", pactVersion = PactSpecVersion.V3)
+@PactTestFor(providerName = "CartApplication")
 @Tag("contractTest")
+@ExtendWith(PactConsumerTestExt.class)
 public class StorageConsumerPactTest {
 
   @Pact(consumer = "StorageApplication")
@@ -46,21 +46,9 @@ public class StorageConsumerPactTest {
 
   @Test
   @PactTestFor(pactMethod = "getAllItems")
-  void getAllItems_whenItemsExist(MockServer mockServer) {
-    List<Item> expected = Arrays.asList(
-        new Item ("A"),
-        new Item ("B"),
-        new Item ("C")
-    );
-
-    WebClient webClient = WebClient.builder()
-        .baseUrl("http://localhost:8080")
-        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        .build();
-
-    List<Item> items = new StorageService(webClient).getItemsAvailable();
-
-    assertEquals(expected, items);
+  void getAllItems_whenItemsExist(MockServer mockServer) throws IOException {
+    HttpResponse httpResponse = Request.Get(mockServer.getUrl() + "/items").execute().returnResponse();
+    assertThat(httpResponse.getStatusLine().getStatusCode(), is(equalTo(200)));
   }
 
   private Map<String, String> headers() {
