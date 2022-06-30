@@ -21,7 +21,17 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+test {
 	systemProperties['pact.rootDir'] = "$rootDir/pacts"
 	useJUnitPlatform()
+	testLogging { events "passed", "skipped", "failed" }
+}
+
+task contractTest(type: Test) {
+	description 'Runs only the contract-test'
+	systemProperties['pact.rootDir'] = "$rootDir/pacts"
+	useJUnitPlatform {
+		includeTags 'contractTest'
+	}
+	testLogging { events "passed", "skipped", "failed" }
 }

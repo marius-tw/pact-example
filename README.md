@@ -17,6 +17,8 @@ required dependency:
 
 - `implementation 'au.com.dius:pact-jvm-consumer-junit5_2.12:3.6.15'`
 
+- for `JUnit 5` an extension annotation is required for the test-class `@ExtendWith(PactConsumerTestExt.class)`
+
 ## PACT-broker setup
 
 - using `https://github.com/pact-foundation/pact-broker-docker#running-with-docker-compose`

@@ -1,4 +1,4 @@
-package com.example.demo.pact;
+package com.example.demo.contract;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
 import static org.hamcrest.CoreMatchers.is;
