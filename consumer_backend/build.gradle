@@ -22,14 +22,14 @@ dependencies {
 }
 
 test {
-	systemProperties['pact.rootDir'] = "$rootDir/pacts"
+	systemProperties['pact.rootDir'] = "$rootDir/contracts"
 	useJUnitPlatform()
 	testLogging { events "passed", "skipped", "failed" }
 }
 
 task contractTest(type: Test) {
 	description 'Runs only the contract-test'
-	systemProperties['pact.rootDir'] = "$rootDir/pacts"
+	systemProperties['pact.rootDir'] = "$rootDir/contracts"
 	useJUnitPlatform {
 		includeTags 'contractTest'
 	}

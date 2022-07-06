@@ -25,7 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(PactConsumerTestExt.class)
 public class StorageConsumerPactTest {
 
-  @Pact(consumer = "StorageApplication")
+  @Pact(consumer = "StorageApplication", provider = "CartApplication")
   public RequestResponsePact getAllItems(PactDslWithProvider builder) {
     return builder
         .given("items exist")
@@ -37,9 +37,9 @@ public class StorageConsumerPactTest {
         .headers(headers())
         .body(
             newJsonArray((rootArray) -> {
-              rootArray.array((a) -> a.object((o) -> o.stringValue("name", "A")));
-              rootArray.array((a) -> a.object((o) -> o.stringValue("name", "B")));
-              rootArray.array((a) -> a.object((o) -> o.stringValue("name", "C")));
+              rootArray.object((o) -> o.stringValue("name", "A"));
+              rootArray.object((o) -> o.stringValue("name", "B"));
+              rootArray.object((o) -> o.stringValue("name", "C"));
             }).build())
         .toPact();
   }
