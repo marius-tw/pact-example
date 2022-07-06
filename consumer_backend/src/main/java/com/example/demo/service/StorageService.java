@@ -39,19 +39,5 @@ public class StorageService {
     );
   }
 
-  private List<Item> fetchCartItems() {
-    return webClient.get()
-        .uri("/items")
-        .retrieve().
-        bodyToMono(new ParameterizedTypeReference<List<Item>>() {
-        }).block();
-  }
 
-  private List<Item> filterCartItemsFromStoredItems(List<Item> storage,
-      List<Item> itemsInCart) {
-    return storage
-        .stream()
-        .filter(storageItem -> !itemsInCart.contains(storageItem))
-        .collect(Collectors.toList());
-  }
 }

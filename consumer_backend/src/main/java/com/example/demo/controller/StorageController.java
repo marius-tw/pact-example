@@ -17,9 +17,4 @@ public class StorageController {
   List<Item> getItemsAvailable() {
     return storageService.getItemsAvailable();
   }
-
-  @GetMapping("/items-stored")
-  List<Item> getItemsStored() {
-    return storageService.getItemsStored();
-  }
 }
