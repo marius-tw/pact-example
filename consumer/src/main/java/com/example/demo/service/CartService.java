@@ -27,7 +27,7 @@ public class CartService {
 
   private List<Item> fetchAvailableItemsFromStorage() {
     return webClient.get()
-        .uri("/items")
+        .uri("/items-available")
         .retrieve().
         bodyToMono(new ParameterizedTypeReference<List<Item>>() {
         }).block();

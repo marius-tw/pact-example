@@ -1,9 +1,9 @@
 package com.example.demo.contract;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
@@ -20,18 +20,18 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@PactTestFor(providerName = "CartApplication")
+@PactTestFor(providerName = "StorageApplication")
 @Tag("contractTest")
 @ExtendWith(PactConsumerTestExt.class)
-public class StorageConsumerPactTest {
+public class CartConsumerPactTest {
 
-  @Pact(consumer = "StorageApplication", provider = "CartApplication")
+  @Pact(consumer = "CartApplication", provider = "StorageApplication")
   public RequestResponsePact getAllItems(PactDslWithProvider builder) {
     return builder
         .given("items exist")
         .uponReceiving("get items in cart")
         .method("GET")
-        .path("/items")
+        .path("/items-available")
         .willRespondWith()
         .status(200)
         .headers(headers())
@@ -47,13 +47,13 @@ public class StorageConsumerPactTest {
   @Test
   @PactTestFor(pactMethod = "getAllItems")
   void getAllItems_whenItemsExist(MockServer mockServer) throws IOException {
-    HttpResponse httpResponse = Request.Get(mockServer.getUrl() + "/items").execute().returnResponse();
+    HttpResponse httpResponse = Request.Get(mockServer.getUrl() + "/items-available").execute().returnResponse();
     assertThat(httpResponse.getStatusLine().getStatusCode(), is(equalTo(200)));
   }
 
   private Map<String, String> headers() {
     Map<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/json; charset=utf-8");
+    headers.put("Content-Type", "application/json;");
     return headers;
   }
 }

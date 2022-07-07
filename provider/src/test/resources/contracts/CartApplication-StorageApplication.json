@@ -1,0 +1,47 @@
+{
+  "provider": {
+    "name": "StorageApplication"
+  },
+  "consumer": {
+    "name": "CartApplication"
+  },
+  "interactions": [
+    {
+      "description": "get items in cart",
+      "request": {
+        "method": "GET",
+        "path": "/items-available"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json;"
+        },
+        "body": [
+          {
+            "name": "A"
+          },
+          {
+            "name": "B"
+          },
+          {
+            "name": "C"
+          }
+        ]
+      },
+      "providerStates": [
+        {
+          "name": "items exist"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "4.1.7"
+    }
+  }
+}

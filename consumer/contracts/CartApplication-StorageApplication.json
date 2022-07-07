@@ -1,21 +1,21 @@
 {
   "provider": {
-    "name": "CartApplication"
+    "name": "StorageApplication"
   },
   "consumer": {
-    "name": "StorageApplication"
+    "name": "CartApplication"
   },
   "interactions": [
     {
       "description": "get items in cart",
       "request": {
         "method": "GET",
-        "path": "/items"
+        "path": "/items-available"
       },
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json; charset=utf-8"
+          "Content-Type": "application/json;"
         },
         "body": [
           {

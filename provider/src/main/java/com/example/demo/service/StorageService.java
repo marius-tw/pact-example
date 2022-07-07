@@ -12,32 +12,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class StorageService {
 
-  private final WebClient webClient;
-
-  @Autowired
-  public StorageService(WebClient webClient) {
-    this.webClient = webClient;
-  }
-
   public List<Item> getItemsAvailable() {
-
-    List<Item> storage = getItemsStored();
-
-    List<Item> itemsInCart = fetchCartItems();
-
-    List<Item> availableItems = filterCartItemsFromStoredItems(storage, itemsInCart);
-
-    return availableItems;
-  }
-
-  public List<Item> getItemsStored() {
     return Arrays.asList(
         new Item("A"),
         new Item("B"),
-        new Item("C"),
-        new Item("D")
+        new Item("C")
     );
   }
-
-
 }

@@ -6,25 +6,26 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator:2.7.0'
-	testImplementation 'au.com.dius.pact.consumer:java8:4.1.7'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 	testImplementation 'au.com.dius.pact.consumer:junit5:4.1.7'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'au.com.dius.pact.consumer:java8:4.1.7'
 }
 
-test {
-	systemProperties['pact.rootDir'] = "$rootDir/contracts"
+tasks.named('test') {
 	useJUnitPlatform()
-	testLogging { events "passed", "skipped", "failed" }
 }
 
 task contractTest(type: Test) {
