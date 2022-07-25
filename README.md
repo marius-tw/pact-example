@@ -1,23 +1,66 @@
-j# PACT-example setup
+# PACT-example setup
 
-This is an example for using ConsumerDrivenContractTesting with two backend-services and one frontend.
+This is an example for using ConsumerDrivenContractTesting with two backend-services and one
+frontend.
 
 ## Local
 
 - `cd provider && ./gradlew bootRun` will start the provider application on port `8080`
-- `cd consumer-backend && ./gradlew bootRun` will start the backend-consumer application on port `8081`
+- `cd consumer && ./gradlew bootRun` will start the consumer application on port `8081`
 
-Triggering consumer-endpoint to fetch from provider:
+Triggering provider-endpoint:
 
-- `curl http://localhost:8081/items-available`
+- `curl http://localhost:8081/items-available` should return
+
+```json
+[
+  {
+    "name": "A"
+  },
+  {
+    "name": "B"
+  },
+  {
+    "name": "C"
+  }
+]
+```
+
+Triggering consumer-endpoint should response with a json object that contains the elements that were
+sent, as long as they are the ones which are in the dummy-repsonse in the storage application:
+
+- `curl -X POST -H "Content-Type: application/json" -d '[{"name":"A"},{"name":"B"},{"name":"C"}]' http://localhost:8080/cart`
+  should return
+
+```json
+[
+  {
+    "name": "A"
+  },
+  {
+    "name": "B"
+  },
+  {
+    "name": "C"
+  }
+]
+```
 
 ## PACT test-setup
 
-required dependency:
+### pre-requisites consumer:
 
-- `implementation 'au.com.dius:pact-jvm-consumer-junit5_2.12:3.6.15'`
+- au.com.dius.pact.consumer:junit5:4.1.7
+- au.com.dius.pact.consumer:java8:4.1.7
 
-- for `JUnit 5` an extension annotation is required for the test-class `@ExtendWith(PactConsumerTestExt.class)`
+### pre-requisites provider:
+
+- au.com.dius.pact.provider:junit5:4.1.7
+
+### consumer test-setup
+
+- for `JUnit 5` an extension annotation is required for the consumer
+  test-class `@ExtendWith(PactConsumerTestExt.class)`
 
 ## PACT-broker setup
 

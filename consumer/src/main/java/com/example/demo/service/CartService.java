@@ -33,11 +33,10 @@ public class CartService {
         }).block();
   }
 
-  private void checkItemsAvailable(List<Item> storage,
-      List<Item> itemsInCart) {
+  private void checkItemsAvailable(List<Item> storage, List<Item> itemsInCart) {
     itemsInCart.forEach(item -> {
       if (!storage.contains(item)) {
-        throw new ItemNotFound("item not available");
+        throw new ItemNotFound(String.format("item %s not available", item.getName()));
       }
     });
   }
