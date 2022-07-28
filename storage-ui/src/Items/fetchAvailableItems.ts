@@ -13,5 +13,5 @@ export const fetchAvailableItems = async (baseUrl: string): Promise<AvailableIte
 }
 
 const buildRequestUrl = (baseUrl: string): string  => {
-    return `${baseUrl}/items`
+    return `${baseUrl}/items-available`
 }

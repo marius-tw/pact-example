@@ -15,7 +15,7 @@ describe('fetchAvailableItems', () => {
 
     const baseUrl = `http://localhost:${contract.opts.port}`
 
-    it('GET /items from exampleProvider', async () => {
+    it('GET /items-available from storage-service', async () => {
         //given
         const expectedAvailableItems: AvailableItems = [
             {name: "Item1"},
@@ -26,7 +26,7 @@ describe('fetchAvailableItems', () => {
             state: "returns all available items",
             uponReceiving: "returns all available items",
             withRequest: {
-                path: '/items',
+                path: '/items-available',
                 method: "GET"
             },
             willRespondWith: {
