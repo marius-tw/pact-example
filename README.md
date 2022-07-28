@@ -62,6 +62,20 @@ sent, as long as they are the ones which are in the dummy-repsonse in the storag
 - for `JUnit 5` an extension annotation is required for the consumer
   test-class `@ExtendWith(PactConsumerTestExt.class)`
 
+## run PACT tests locally
+
+First we need to run the contract-test at the consumer-application to create the contract-json
+
+`cd shopping-cart-service && ./gradlew contractTest` will run the consumer contract-tests and create a contract-json
+
+After the contract-json has been created we copy the contract to the provider-application's test-resources directory
+
+`cp shopping-cart-service/contracts/CartApplication-StorageApplication.json storage-service/src/test/resources`
+
+With those contracts we can run the provider's contract tests against the created contract-json with
+
+`cd storage-service && ./gradlew contractTest` will start the provider contract-tests
+
 ## PACT-broker setup
 
 - using `https://github.com/pact-foundation/pact-broker-docker#running-with-docker-compose`
