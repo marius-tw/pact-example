@@ -5,7 +5,7 @@ frontend.
 
 ## Local
 
-- `cd provider && ./gradlew bootRun` will start the provider application on port `8080`
+- `cd storage-service && ./gradlew bootRun` will start the provider application on port `8080`
 - `cd shopping-cart-service && ./gradlew bootRun` will start the consumer application on port `8081`
 
 Triggering provider-endpoint:
