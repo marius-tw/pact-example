@@ -9,8 +9,8 @@ import {AvailableItems} from "./types/AvailableItems";
 describe('fetchAvailableItems', () => {
 
     const contract = createContract({
-        consumerName: "consumer-frontend",
-        providerName: "provider",
+        consumerName: "storage-ui",
+        providerName: "storage-service",
     })
 
     const baseUrl = `http://localhost:${contract.opts.port}`
