@@ -1,12 +1,12 @@
-interface Item {}
-type Items = Item[]
+import {AvailableItems} from "./types/AvailableItems";
+
 const HTTP_STATUS_OK = 200;
 
-export const fetchItems = async (baseUrl: string): Promise<Items> => {
+export const fetchAvailableItems = async (baseUrl: string): Promise<AvailableItems> => {
     const requestUrl = buildRequestUrl(baseUrl);
     const response = await fetch(requestUrl);
     if (response.status === HTTP_STATUS_OK) {
-        return await response.json() as Items
+        return await response.json() as AvailableItems
     } else {
         throw new Error(`fetching items failed with status ${response.status}`)
     }
