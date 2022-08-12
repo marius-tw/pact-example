@@ -10,6 +10,7 @@ import au.com.dius.pact.provider.junitsupport.Consumer;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import com.example.demo.entity.Item;
+import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import com.example.demo.service.StorageService;
 import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +21,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-@Provider("StorageApplication")
-@Consumer("CartApplication")
+@Provider("StorageService")
+@Consumer("StorageUi")
 @PactFolder("contracts")
 @Tag("contractTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CartProviderContractTest {
+public class StorageUiProviderContractTest {
 
   @LocalServerPort
   int port;
@@ -44,7 +45,7 @@ public class CartProviderContractTest {
     context.verifyInteraction();
   }
 
-  @State("items exist")
+  @State("returns all available items")
   void toItemsExistState() {
     when(storageService.getItemsAvailable()).thenReturn(
         Arrays.asList(new Item("A"), new Item("B"), new Item("C"))

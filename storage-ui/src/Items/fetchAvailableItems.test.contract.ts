@@ -9,8 +9,8 @@ import {AvailableItems} from "./types/AvailableItems";
 describe('fetchAvailableItems', () => {
 
     const contract = createContract({
-        consumerName: "storage-ui",
-        providerName: "storage-service",
+        consumerName: "StorageUi",
+        providerName: "StorageService",
     })
 
     const baseUrl = `http://localhost:${contract.opts.port}`
@@ -32,7 +32,7 @@ describe('fetchAvailableItems', () => {
             willRespondWith: {
                 status: 200,
                 headers: {
-                    "Content-Type": "application-json"
+                    "Content-Type": "application/json"
                 },
                 body: like(expectedAvailableItems)
             }

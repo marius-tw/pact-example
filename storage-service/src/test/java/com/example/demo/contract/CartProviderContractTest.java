@@ -25,7 +25,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 @PactFolder("contracts")
 @Tag("contractTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class StorageProviderPactTest {
+public class CartProviderContractTest {
 
   @LocalServerPort
   int port;
