@@ -11,6 +11,7 @@ import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @PactTestFor(providerName = "StorageApplication")
 @Tag("contractTest")
+@PactFolder("contracts")
 @ExtendWith(PactConsumerTestExt.class)
 public class CartConsumerPactTest {
 
@@ -53,7 +55,7 @@ public class CartConsumerPactTest {
 
   private Map<String, String> headers() {
     Map<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/json;");
+    headers.put("Content-Type", "application/json");
     return headers;
   }
 }
