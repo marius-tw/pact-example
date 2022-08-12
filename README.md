@@ -66,15 +66,15 @@ sent, as long as they are the ones which are in the dummy-repsonse in the storag
 
 First we need to run the contract-test at the consumer-application to create the contract-json
 
-`cd shopping-cart-service && ./gradlew contractTest` will run the consumer contract-tests and create a contract-json
+`pushd shopping-cart-service && ./gradlew contractTest && popd` will run the consumer contract-tests and create a contract-json
 
 After the contract-json has been created we copy the contract to the provider-application's test-resources directory
 
-`cp shopping-cart-service/contracts/CartApplication-StorageApplication.json storage-service/src/test/resources`
+`cp shopping-cart-service/contracts/CartApplication-StorageApplication.json storage-service/contracts/`
 
 With those contracts we can run the provider's contract tests against the created contract-json with
 
-`cd storage-service && ./gradlew contractTest` will start the provider contract-tests
+`pushd storage-service && ./gradlew contractTest && popd` will start the provider contract-tests
 
 ## PACT-broker setup
 
