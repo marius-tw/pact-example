@@ -1,6 +1,6 @@
 # PACT-example setup
 
-This is an example for using ConsumerDrivenContractTesting with two backend-services and one
+This is an example for using ConsumerDrivenContractTesting between two backend-services and one
 frontend.
 
 ## Local
