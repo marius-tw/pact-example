@@ -3,12 +3,13 @@
 This is an example for using ConsumerDrivenContractTesting between two backend-services and one
 frontend.
 
-## Local
+## Start local
 
-- `cd storage-service && ./gradlew bootRun` will start the provider application on port `8080`
-- `cd shopping-cart-service && ./gradlew bootRun` will start the consumer application on port `8081`
+- `cd storage-service && ./gradlew bootRun` will start the provider application on port `8081`
+- `cd shopping-cart-service && ./gradlew bootRun` will start the consumer application on port `8082`
+- `cd storage-ui && yarn start` will start the ui on port `3000`
 
-Triggering provider-endpoint:
+Triggering provider-endpoint of the `storage-service`:
 
 - `curl http://localhost:8081/items-available` should return
 
@@ -26,10 +27,11 @@ Triggering provider-endpoint:
 ]
 ```
 
-Triggering consumer-endpoint should response with a json object that contains the elements that were
-sent, as long as they are the ones which are in the dummy-repsonse in the storage application:
+Triggering consumer-endpoint of the `shopping-cart-service` should respond with a json object that
+contains the elements that were sent, as long as they are the ones which are in the dummy-response
+of the `storage-service` (from above, cf. as well `StorageService`):
 
-- `curl -X POST -H "Content-Type: application/json" -d '[{"name":"A"},{"name":"B"},{"name":"C"}]' http://localhost:8080/cart`
+- `curl -X POST -H "Content-Type: application/json" -d '[{"name":"A"},{"name":"B"},{"name":"C"}]' http://localhost:8082/cart`
   should return
 
 ```json
@@ -45,6 +47,13 @@ sent, as long as they are the ones which are in the dummy-repsonse in the storag
   }
 ]
 ```
+
+Whereas
+
+`curl -X POST -H "Content-Type: application/json" -d '[{"name":"D"}]' http://localhost:8082/cart`
+
+should return an Internal Server Error on the consumer side, and you should see something
+like `ItemNotFound: item D not available` in the logs of the provider-service.
 
 ## PACT test-setup
 
@@ -66,9 +75,11 @@ sent, as long as they are the ones which are in the dummy-repsonse in the storag
 
 First we need to run the contract-test at the consumer-application to create the contract-json
 
-`pushd shopping-cart-service && ./gradlew contractTest && popd` will run the consumer contract-tests and create a contract-json
+`pushd shopping-cart-service && ./gradlew contractTest && popd` will run the consumer contract-tests
+and create a contract-json
 
-After the contract-json has been created we copy the contract to the provider-application's test-resources directory
+After the contract-json has been created we copy the contract to the provider-application's
+test-resources directory
 
 `cp shopping-cart-service/contracts/CartApplication-StorageApplication.json storage-service/contracts/`
 
