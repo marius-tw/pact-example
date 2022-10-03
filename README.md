@@ -73,17 +73,32 @@ like `ItemNotFound: item D not available` in the logs of the provider-service.
 
 ## run PACT tests locally
 
-First we need to run the contract-test at the consumer-application to create the contract-json
+First we need to run the contract-test at the consumer-applications to create the contract-json
 
-`pushd shopping-cart-service && ./gradlew contractTest && popd` will run the consumer contract-tests
+### backend-consumer-application
+
+`pushd shopping-cart-service && ./gradlew contractTest && popd` will run the consumer contract-tests for the backend-consumer
 and create a contract-json
+
+### frontend-consumer-application
+
+`pushd storage-ui && npm run contract-test && popd` will run the consumer contract-tests for the frontend-consumer
+and create a contract-json
+
+> It might be that the local test-provider, that is being started on port 8099, did not ramp down completely.
+> Then the contract-test in `storage-ui` might not work. To fix that check whether there is a process occupying
+> 8099 and end it.
+
+### Copy contracts to use it at the provider-application-codebase
 
 After the contract-json has been created we copy the contract to the provider-application's
 test-resources directory
 
 `cp shopping-cart-service/contracts/CartApplication-StorageApplication.json storage-service/contracts/`
 
-With those contracts we can run the provider's contract tests against the created contract-json with
+`cp storage-ui/contracts/storageui-storageservice.json storage-service/contracts/`
+
+With those contracts we can run the provider's contract tests against the created contract-json's with
 
 `pushd storage-service && ./gradlew contractTest && popd` will start the provider contract-tests
 
@@ -94,4 +109,3 @@ With those contracts we can run the provider's contract tests against the create
 ## Further Resources
 
 - https://github.com/pact-foundation/pact-workshop-jvm-spring
-

@@ -1,45 +1,44 @@
 /**
  * @jest-environment jsdom
  */
-import {createContract} from "../test-utils";
-import {like} from "@pact-foundation/pact/src/dsl/matchers";
-import {fetchAvailableItems} from "./fetchAvailableItems";
-import {AvailableItems} from "./types/AvailableItems";
+import { createProvider } from "../test-utils";
+import { like } from "@pact-foundation/pact/src/dsl/matchers";
+import { fetchAvailableItems } from "./fetchAvailableItems";
+import { AvailableItems } from "./types/AvailableItems";
 
-describe('fetchAvailableItems', () => {
+describe("fetchAvailableItems", () => {
+  const contract = createProvider({
+    consumerName: "StorageUi",
+    providerName: "StorageService",
+  });
 
-    const contract = createContract({
-        consumerName: "StorageUi",
-        providerName: "StorageService",
-    })
+  const baseUrl = `http://localhost:${contract.opts.port}`;
 
-    const baseUrl = `http://localhost:${contract.opts.port}`
-
-    it('GET /items-available from storage-service', async () => {
-        //given
-        const expectedAvailableItems: AvailableItems = [
-            {name: "Item1"},
-            {name: "Item2"},
-            {name: "Item3"},
-        ]
-        await contract.addInteraction({
-            state: "returns all available items",
-            uponReceiving: "returns all available items",
-            withRequest: {
-                path: '/items-available',
-                method: "GET"
-            },
-            willRespondWith: {
-                status: 200,
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: like(expectedAvailableItems)
-            }
-        })
-        //when
-        const actualAvailableItems = await fetchAvailableItems(baseUrl)
-        //then
-        expect(actualAvailableItems).toEqual(expectedAvailableItems)
+  it("GET /items-available from storage-service", async () => {
+    //given
+    const expectedAvailableItems: AvailableItems = [
+      { name: "Item1" },
+      { name: "Item2" },
+      { name: "Item3" },
+    ];
+    await contract.addInteraction({
+      state: "returns all available items",
+      uponReceiving: "returns all available items",
+      withRequest: {
+        path: "/items-available",
+        method: "GET",
+      },
+      willRespondWith: {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: like(expectedAvailableItems),
+      },
     });
+    //when
+    const actualAvailableItems = await fetchAvailableItems(baseUrl);
+    //then
+    expect(actualAvailableItems).toEqual(expectedAvailableItems);
+  });
 });
